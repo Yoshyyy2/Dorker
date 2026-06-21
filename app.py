@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 import requests
 import re
+import os
 
 app = Flask(__name__)
 
@@ -40,11 +41,9 @@ def search():
     dork = data.get("dork", "")
     if not dork:
         return jsonify({"error": "No dork provided"}), 400
-    
+
     results = search_serpapi(dork)
     return jsonify({"results": results})
-
-import os
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8080))
