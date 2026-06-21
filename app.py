@@ -1,13 +1,12 @@
 from flask import Flask, render_template, request, jsonify
 import requests
-import re
 import os
 
 app = Flask(__name__)
 
 API_KEY = "a5e2e510ef7f9f54f345ac61fc7e534dde05b525a8d4c8795f665f88981dc904"
 
-def search_serpapi(dork, num_results=20):
+def search_serpapi(dork, num_results=50):
     url = "https://serpapi.com/search.json"
     params = {
         "q": dork,
@@ -21,14 +20,11 @@ def search_serpapi(dork, num_results=20):
         results = []
         if "organic_results" in data:
             for item in data.get("organic_results", []):
-                if "link" in item:
-                    results.append({
-                        "title": item.get("title", ""),
-                        "link": item.get("link", ""),
-                        "snippet": item.get("snippet", "")
-                    })
+                results.append({
+                    "link": item.get("link", "")
+                })
         return results
-    except Exception as e:
+    except:
         return []
 
 @app.route("/")
@@ -39,10 +35,12 @@ def index():
 def search():
     data = request.get_json()
     dork = data.get("dork", "")
+    num = int(data.get("num", 50))
+
     if not dork:
         return jsonify({"error": "No dork provided"}), 400
 
-    results = search_serpapi(dork)
+    results = search_serpapi(dork, num)
     return jsonify({"results": results})
 
 if __name__ == "__main__":
