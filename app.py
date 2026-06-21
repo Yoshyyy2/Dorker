@@ -12,7 +12,10 @@ def search_serpapi(dork, num_results=50):
         "q": dork,
         "api_key": API_KEY,
         "num": num_results,
-        "engine": "google"
+        "engine": "google",
+        "google_domain": "google.com",
+        "hl": "en",
+        "gl": "us"
     }
     try:
         response = requests.get(url, params=params, timeout=15)
