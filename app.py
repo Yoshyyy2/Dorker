@@ -23,9 +23,7 @@ def search_serpapi(dork, num_results=50):
         results = []
         if "organic_results" in data:
             for item in data.get("organic_results", []):
-                results.append({
-                    "link": item.get("link", "")
-                })
+                results.append({"link": item.get("link", "")})
         return results
     except:
         return []
